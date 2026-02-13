@@ -142,6 +142,7 @@ export default function Home() {
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState('edit');
   const [publishing, setPublishing] = useState(false);
+  const [publishDate, setPublishDate] = useState(new Date().toISOString().split('T')[0]);
   const [publishResult, setPublishResult] = useState(null);
   const [writerKey, setWriterKey] = useState('');
   const [showLogin, setShowLogin] = useState(true);
@@ -157,7 +158,7 @@ export default function Home() {
     const today = new Date().toISOString().split('T')[0];
     const tagList = tags.split(',').map(t => t.trim()).filter(Boolean);
     const validFaqs = faqs.filter(f => f.q.trim() && f.a.trim());
-    let md = `---\ntitle: "${title}"\ndescription: "${description}"\npublishDate: ${today}\ncategory: "${category}"\n`;
+    let md = `---\ntitle: "${title}"\ndescription: "${description}"\npublishDate: ${publishDate}\ncategory: "${category}"\n`;
     if (tagList.length) md += `tags: [${tagList.map(t => `"${t}"`).join(', ')}]\n`;
     if (coverImage) md += `image: "${coverImage}"\n`;
     if (validFaqs.length) { md += 'faq:\n'; validFaqs.forEach(f => { md += `  - q: "${f.q}"\n    a: "${f.a}"\n`; }); }
@@ -254,6 +255,11 @@ export default function Home() {
         <div className="flex items-center gap-2">
           <span className="text-sm font-bold"><span className="text-teal-400">✦</span> Vega Writer</span>
           <button onClick={handleNew} className="text-xs px-2 py-0.5 bg-stone-800 hover:bg-stone-700 rounded text-stone-400">📄 新文章</button>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+          <label style={{ fontSize: 12, color: '#78716c' }}>📅 發布日期</label>
+          <input type="date" value={publishDate} onChange={e => setPublishDate(e.target.value)}
+            style={{ padding: '4px 8px', borderRadius: 6, border: '1px solid #d6d3d1', fontSize: 12 }} />
         </div>
         <div className="flex items-center gap-1.5">
           <span className="text-xs text-stone-500 hidden sm:block">{wordCount} 字</span>
